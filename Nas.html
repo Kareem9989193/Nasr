@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مستر محمد نصر عرب - الأسطورة</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --red: #c0392b;
+      --dark-red: #7b241c;
+      --black: #0a0a0a;
+      --yellow: #f39c12;
+      --white: #f5f5f5;
+      --gray: #1a1a1a;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Cairo', sans-serif;
+      overflow-x: hidden;
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ctext y='28' font-size='28'%3E📚%3C/text%3E%3C/svg%3E") 16 16, auto;
+    }
+
+    /* ====== LIGHTNING BG ====== */
+    #bg-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.18;
+    }
+
+    .container { position: relative; z-index: 1; }
+
+    /* ====== HERO ====== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+      background: radial-gradient(ellipse at center, #1a0000 0%, #0a0a0a 70%);
+    }
+
+    .warning-tape {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        var(--yellow) 0px, var(--yellow) 20px,
+        #000 20px, #000 40px
+      );
+      height: 30px;
+      animation: scrollTape 5s linear infinite;
+    }
+
+    @keyframes scrollTape {
+      from { background-position: 0 0; }
+      to { background-position: 80px 0; }
+    }
+
+    .skull-row {
+      font-size: 2rem;
+      letter-spacing: 10px;
+      margin-bottom: 1rem;
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.95); }
+    }
+
+    .hero-title {
+      font-size: clamp(2.5rem, 8vw, 6rem);
+      font-weight: 900;
+      color: var(--red);
+      text-shadow:
+        0 0 20px var(--red),
+        0 0 60px #ff000055,
+        3px 3px 0 var(--dark-red);
+      line-height: 1.1;
+      animation: flicker 3s infinite;
+      margin: 1rem 0;
+    }
+
+    @keyframes flicker {
+      0%, 95%, 100% { opacity: 1; }
+      96% { opacity: 0.3; }
+      97% { opacity: 1; }
+      98% { opacity: 0.1; }
+      99% { opacity: 0.9; }
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1rem, 3vw, 1.8rem);
+      color: var(--yellow);
+      font-family: 'Amiri', serif;
+      margin-bottom: 2rem;
+      letter-spacing: 2px;
+    }
+
+    .scary-meter {
+      background: #111;
+      border: 2px solid var(--red);
+      border-radius: 50px;
+      padding: 0.5rem 2rem;
+      width: 80%;
+      max-width: 500px;
+      margin: 1rem auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scary-fill {
+      height: 30px;
+      background: linear-gradient(90deg, var(--yellow), var(--red), #8b0000);
+      border-radius: 50px;
+      width: 0%;
+      animation: fillMeter 2s ease-out 0.5s forwards;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: white;
+      white-space: nowrap;
+      text-shadow: 1px 1px 2px black;
+    }
+
+    @keyframes fillMeter {
+      to { width: 99%; }
+    }
+
+    .meter-label {
+      font-size: 0.9rem;
+      color: #aaa;
+      margin-top: 0.3rem;
+    }
+
+    /* ====== QUOTE SCROLL ====== */
+    .quote-ticker {
+      background: var(--red);
+      padding: 0.6rem 0;
+      overflow: hidden;
+      white-space: nowrap;
+      margin: 2rem 0;
+      border-top: 3px solid var(--yellow);
+      border-bottom: 3px solid var(--yellow);
+    }
+
+    .quote-ticker-inner {
+      display: inline-block;
+      animation: ticker 20s linear infinite;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* ====== SECTIONS ====== */
+    .sections {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--gray);
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 3px;
+      background: linear-gradient(90deg, var(--red), var(--yellow));
+    }
+
+    .card:hover {
+      transform: translateY(-6px) scale(1.02);
+      border-color: var(--red);
+      box-shadow: 0 0 30px #c0392b44;
+    }
+
+    .card-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
+    .card-title {
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: var(--yellow);
+      margin-bottom: 0.8rem;
+    }
+    .card-text { font-size: 0.95rem; line-height: 1.7; color: #ccc; }
+
+    /* ====== SURVIVAL GUIDE ====== */
+    .survival {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+    }
+
+    .survival h2 {
+      font-size: 2rem;
+      color: var(--red);
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-weight: 900;
+    }
+
+    .tip {
+      background: #111;
+      border-right: 4px solid var(--red);
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .tip:hover {
+      background: #1a0000;
+      border-right-color: var(--yellow);
+      transform: translateX(-4px);
+    }
+
+    .tip-num {
+      background: var(--red);
+      color: white;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      flex-shrink: 0;
+      font-size: 0.9rem;
+    }
+
+    .tip-text { font-size: 1rem; line-height: 1.7; color: #ddd; }
+
+    /* ====== MYTHS ====== */
+    .myths-section {
+      max-width: 900px;
+      margin: 3rem auto;
+      padding: 0 2rem;
+    }
+
+    .myths-section h2 {
+      font-size: 2rem;
+      color: var(--yellow);
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-weight: 900;
+    }
+
+    .myth-item {
+      background: var(--gray);
+      border-radius: 12px;
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 1rem;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      border: 1px solid #2a2a2a;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .myth-item:hover {
+      background: #1f0000;
+      border-color: var(--red);
+    }
+
+    .myth-icon { font-size: 2rem; flex-shrink: 0; }
+    .myth-content { flex: 1; }
+    .myth-title { font-weight: 900; color: var(--white); margin-bottom: 0.3rem; }
+    .myth-desc { font-size: 0.9rem; color: #aaa; }
+
+    /* ====== DANGER SCALE ====== */
+    .danger-section {
+      max-width: 700px;
+      margin: 3rem auto;
+      padding: 0 2rem;
+      text-align: center;
+    }
+
+    .danger-section h2 {
+      font-size: 2rem;
+      color: var(--red);
+      margin-bottom: 2rem;
+      font-weight: 900;
+    }
+
+    .danger-items {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .danger-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: #111;
+      border-radius: 8px;
+      padding: 0.8rem 1.2rem;
+      text-align: right;
+    }
+
+    .danger-emoji { font-size: 1.5rem; flex-shrink: 0; }
+    .danger-label { flex: 1; font-size: 0.95rem; }
+
+    .danger-bar-wrap {
+      width: 150px;
+      background: #222;
+      border-radius: 50px;
+      height: 12px;
+      overflow: hidden;
+    }
+
+    .danger-bar {
+      height: 100%;
+      border-radius: 50px;
+      background: linear-gradient(90deg, var(--yellow), var(--red));
+      animation: growBar 1.5s ease-out forwards;
+      width: 0%;
+    }
+
+    @keyframes growBar {
+      to { width: var(--w); }
+    }
+
+    /* ====== SOUNDBOARD ====== */
+    .soundboard {
+      max-width: 800px;
+      margin: 3rem auto;
+      padding: 0 2rem;
+      text-align: center;
+    }
+
+    .soundboard h2 {
+      font-size: 2rem;
+      color: var(--yellow);
+      margin-bottom: 1.5rem;
+      font-weight: 900;
+    }
+
+    .sound-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+    }
+
+    .sound-btn {
+      background: #111;
+      border: 2px solid var(--red);
+      border-radius: 12px;
+      padding: 1.2rem 0.8rem;
+      color: var(--white);
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .sound-btn:hover {
+      background: var(--dark-red);
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #c0392b66;
+    }
+
+    .sound-btn:active { transform: scale(0.95); }
+    .sound-btn .btn-icon { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
+
+    /* ====== QUIZ ====== */
+    .quiz-section {
+      max-width: 700px;
+      margin: 3rem auto;
+      padding: 0 2rem;
+    }
+
+    .quiz-section h2 {
+      font-size: 2rem;
+      color: var(--red);
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-weight: 900;
+    }
+
+    .quiz-box {
+      background: var(--gray);
+      border: 2px solid var(--red);
+      border-radius: 16px;
+      padding: 2rem;
+    }
+
+    .quiz-q {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 1.2rem;
+      color: var(--yellow);
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .quiz-opt {
+      background: #111;
+      border: 1px solid #444;
+      border-radius: 8px;
+      padding: 0.8rem 1rem;
+      cursor: pointer;
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.95rem;
+      color: var(--white);
+      text-align: right;
+      transition: all 0.2s;
+    }
+
+    .quiz-opt:hover { background: #1a0000; border-color: var(--red); }
+    .quiz-opt.correct { background: #0a3d0a; border-color: #2ecc71; color: #2ecc71; }
+    .quiz-opt.wrong { background: #3d0a0a; border-color: var(--red); color: var(--red); }
+
+    .quiz-result {
+      margin-top: 1rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-align: center;
+      min-height: 2rem;
+    }
+
+    .quiz-next {
+      display: block;
+      margin: 1rem auto 0;
+      background: var(--red);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0.7rem 2rem;
+      font-family: 'Cairo', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .quiz-next:hover { background: var(--dark-red); transform: scale(1.05); }
+
+    /* ====== FOOTER ====== */
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      color: #555;
+      font-size: 0.9rem;
+      border-top: 1px solid #222;
+      margin-top: 4rem;
+    }
+
+    footer .big-skull { font-size: 4rem; display: block; margin-bottom: 1rem; }
+
+    /* ====== SHAKE ANIMATION ====== */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-8px) rotate(-2deg); }
+      40% { transform: translateX(8px) rotate(2deg); }
+      60% { transform: translateX(-6px); }
+      80% { transform: translateX(6px); }
+    }
+
+    .shake { animation: shake 0.5s ease; }
+
+    /* ====== POPUP ====== */
+    .popup-overlay {
+      position: fixed;
+      inset: 0;
+      background: #000000cc;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .popup-overlay.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .popup-box {
+      background: var(--gray);
+      border: 3px solid var(--red);
+      border-radius: 16px;
+      padding: 2rem;
+      max-width: 400px;
+      text-align: center;
+      position: relative;
+      animation: popIn 0.3s ease;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.5) rotate(-5deg); opacity: 0; }
+      to { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    .popup-icon { font-size: 4rem; margin-bottom: 1rem; }
+    .popup-msg { font-size: 1.2rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--yellow); }
+    .popup-close {
+      background: var(--red);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0.6rem 2rem;
+      font-family: 'Cairo', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* ====== SECTION HEADERS ====== */
+    .section-header {
+      text-align: center;
+      padding: 2rem 1rem 1rem;
+    }
+
+    .section-header h2 {
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      font-weight: 900;
+      color: var(--red);
+      text-shadow: 0 0 20px #c0392b55;
+    }
+
+    .divider {
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--red), var(--yellow));
+      margin: 0.5rem auto 0;
+      border-radius: 2px;
+    }
+
+    /* ====== RESPONSIVE ====== */
+    @media (max-width: 600px) {
+      .sections { grid-template-columns: 1fr; padding: 1rem; }
+      .danger-row { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Background canvas -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- Popup -->
+<div class="popup-overlay" id="popup">
+  <div class="popup-box">
+    <div class="popup-icon" id="popup-icon">😱</div>
+    <div class="popup-msg" id="popup-msg">تحذير!</div>
+    <button class="popup-close" onclick="closePopup()">حسناً، ربنا يستر!</button>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="warning-tape"></div>
+    <div class="skull-row">💀 ☠️ 💀 ☠️ 💀 ☠️ 💀</div>
+    <h1 class="hero-title">⚠️ مستر<br>محمد نصر عرب<br>⚠️</h1>
+    <p class="hero-subtitle">الأسطورة · الرعب · المستحيل</p>
+
+    <div class="scary-meter">
+      <div class="scary-fill">☠️ مستوى القسوة: لا يُوصف ☠️</div>
+    </div>
+    <p class="meter-label">⚠️ هذا المستر تجاوز كل المقاييس المعروفة</p>
+
+    <div style="margin-top: 2rem; font-size: 1.5rem; animation: pulse 2s infinite;">
+      📚 اللي فات مات .. اللي جاي أصعب 📚
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="quote-ticker">
+    <span class="quote-ticker-inner">
+      💀 "افتح الكتاب" 😱 &nbsp;&nbsp;&nbsp; ☠️ "مين مذاكر؟" 😰 &nbsp;&nbsp;&nbsp; ⚠️ "اللي مش مذاكر يقوم يخرج!" 😭 &nbsp;&nbsp;&nbsp; 🔥 "هتتعذبوا" 💀 &nbsp;&nbsp;&nbsp; ☠️ "افتح الكتاب" 😱 &nbsp;&nbsp;&nbsp; ⚠️ "مين مذاكر؟" 😰 &nbsp;&nbsp;&nbsp; 💀 "اللي مش مذاكر يقوم يخرج!" 😭 &nbsp;&nbsp;&nbsp; 🔥 "هتتعذبوا" ☠️ &nbsp;&nbsp;&nbsp;
+    </span>
+  </div>
+
+  <!-- CHARACTERISTICS -->
+  <div class="section-header">
+    <h2>صفات المستر الرهيبة</h2>
+    <div class="divider"></div>
+  </div>
+
+  <div class="sections">
+    <div class="card" onclick="triggerShake(this)">
+      <div class="card-icon">👁️</div>
+      <div class="card-title">النظرة القاتلة</div>
+      <div class="card-text">لما بيبص عليك بتحس إنك اتجمدت في مكانك. النظرة دي بتخلي الطلبة يراجعوا حياتهم كلها في ثانية واحدة.</div>
+    </div>
+    <div class="card" onclick="triggerShake(this)">
+      <div class="card-icon">📢</div>
+      <div class="card-title">الصوت الترهيبي</div>
+      <div class="card-text">لما بيرفع صوته، الجدران بترجرج والطلبة في الأدوار التانية بيخافوا. حتى الطيور بتطير من على الشجر.</div>
+    </div>
+    <div class="card" onclick="triggerShake(this)">
+      <div class="card-icon">🧠</div>
+      <div class="card-title">الذاكرة الفيلية</div>
+      <div class="card-text">بيتذكر كل طالب مجاوبش سؤاله من 3 سنين. مفيش حاجة بتفوته. بيتذكر ورقة الامتحان بتاعتك أحسن منك.</div>
+    </div>
+    <div class="card" onclick="triggerShake(this)">
+      <div class="card-icon">⚡</div>
+      <div class="card-title">السرعة الخارقة</div>
+      <div class="card-text">لو حاولت تغش، هو عند ورقتك قبل ما تمسكها. يمشي بالفصل بسرعة الضوء وبيحس بالحركة الزيادة على الفور.</div>
+    </div>
+    <div class="card" onclick="triggerShake(this)">
+      <div class="card-icon">📝</div>
+      <div class="card-title">الامتحانات القاتلة</div>
+      <div class="card-text">بيعمل امتحانات من الفصول اللي مفيش حد قرأها. الأسئلة بتكون من الهامش وما بين السطور. تحفة رعب حقيقية.</div>
+    </div>
+    <div class="card" onclick="triggerShake(this)">
+      <div class="card-icon">🎯</div>
+      <div class="card-title">الاستهداف الدقيق</div>
+      <div class="card-text">بيحس مين مش مذاكر قبل ما يسأله. من طريقة قعدتك وهدومك ونفسك بيعرف مستواك. تليباثي علمية.</div>
+    </div>
+  </div>
+
+  <!-- SURVIVAL GUIDE -->
+  <div class="survival">
+    <h2>🛡️ دليل النجاة من المستر 🛡️</h2>
+    <div class="tip" onclick="showPopup('⚠️', 'حتى لو اتعلمت كل حاجة، المستر هيلاقي اللي انت مش عارفه!')">
+      <div class="tip-num">1</div>
+      <div class="tip-text">ذاكر كل حاجة في الكتاب، حتى الغلاف والفهرس، فيه منهم طلع في الامتحان.</div>
+    </div>
+    <div class="tip" onclick="showPopup('😱', 'ده أصعب من أي امتحان!')">
+      <div class="tip-num">2</div>
+      <div class="tip-text">لا تبص في عيون المستر مباشرة. ابص في جبهته أو أذنه، ده هيحميك من التجميد الفوري.</div>
+    </div>
+    <div class="tip" onclick="showPopup('💀', 'صدقني ما فيش حاجة اسمها مكان هادي في فصل المستر!')">
+      <div class="tip-num">3</div>
+      <div class="tip-text">اقعد في المنتصف بالظبط، مش قدام ولا أخر. القدام مكشوف وفي الأخر المستر بييجي ليك هو.</div>
+    </div>
+    <div class="tip" onclick="showPopup('🔥', 'ده حلق دي دي في وسط الدرس!')">
+      <div class="tip-num">4</div>
+      <div class="tip-text">لو سألك وانت مش عارف، اقول "المعلومة عندي يا استاذ بس شارد ذهني ثانية" واسأله هو يشرح.</div>
+    </div>
+    <div class="tip" onclick="showPopup('📚', 'مذاكرة حقيقية يعني نوم بعدها في الكتاب!')">
+      <div class="tip-num">5</div>
+      <div class="tip-text">ذاكر قبل الحصة بساعة مش الليل اللي فات. الذاكرة القريبة هي اللي بتنجيك وقت السؤال.</div>
+    </div>
+    <div class="tip" onclick="showPopup('😭', 'اخصم مني بس متعملش كده!')">
+      <div class="tip-num">6</div>
+      <div class="tip-text">أي سؤال بيسأله، ابدأ الإجابة بـ"بالنسبة لـ.." ده بيديك ثواني تفكر وبيبان إنك عارف.</div>
+    </div>
+    <div class="tip" onclick="showPopup('☠️', 'ده وصفة لامتحان تاني على طول!')">
+      <div class="tip-num">7</div>
+      <div class="tip-text">بعد الامتحان، مفيش تعليق على الأسئلة الصعبة قدام المستر. بيفتكر اللي قال إنها صعبة ويعمله أصعب.</div>
+    </div>
+  </div>
+
+  <!-- MYTHS -->
+  <div class="myths-section">
+    <h2>🌟 أساطير المستر المتداولة 🌟</h2>
+
+    <div class="myth-item" onclick="triggerShake(this)">
+      <div class="myth-icon">🦅</div>
+      <div class="myth-content">
+        <div class="myth-title">الأسطورة الأولى: النظر من الظهر</div>
+        <div class="myth-desc">بيقولوا المستر بيحس بالطلبة اللي بيشتغلوا على التليفون حتى لو ظهره عليهم. مفيش دليل إنه مش صح.</div>
+      </div>
+    </div>
+
+    <div class="myth-item" onclick="triggerShake(this)">
+      <div class="myth-icon">📖</div>
+      <div class="myth-content">
+        <div class="myth-title">الأسطورة الثانية: قرأ الكتاب مليون مرة</div>
+        <div class="myth-desc">بيقولوا المستر قرأ الكتاب لدرجة إنه يقدر يقوله صفحة أي معلومة من ذاكرته وبدون ما يفكر.</div>
+      </div>
+    </div>
+
+    <div class="myth-item" onclick="triggerShake(this)">
+      <div class="myth-icon">😴</div>
+      <div class="myth-content">
+        <div class="myth-title">الأسطورة الثالثة: مش بينام</div>
+        <div class="myth-desc">شايعة إن المستر بيقضي الليل كله في عمل أسئلة امتحان جديدة بدل النوم. تفسير وحيد للأسئلة دي.</div>
+      </div>
+    </div>
+
+    <div class="myth-item" onclick="triggerShake(this)">
+      <div class="myth-icon">🎲</div>
+      <div class="myth-content">
+        <div class="myth-title">الأسطورة الرابعة: مفيش حظ عنده</div>
+        <div class="myth-desc">الطلبة اللي بيتكلوا على الحظ في الامتحانات بتلاقيه بيسأل بالظبط في اللي ما ذاكروهوش. نظرية مؤكدة.</div>
+      </div>
+    </div>
+
+    <div class="myth-item" onclick="triggerShake(this)">
+      <div class="myth-icon">🤫</div>
+      <div class="myth-content">
+        <div class="myth-title">الأسطورة الخامسة: بيسمع الهمس</div>
+        <div class="myth-desc">إذا همست لصاحبك في الفصل، حتى بصوت مسموش، المستر بييجي عليك على طول. حواس فوق البشرية.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DANGER SCALE -->
+  <div class="danger-section">
+    <h2>⚠️ مقياس خطورة المواقف ⚠️</h2>
+    <div class="danger-items">
+      <div class="danger-row">
+        <div class="danger-emoji">📱</div>
+        <div class="danger-label">تليفون على الصامت في الحصة</div>
+        <div class="danger-bar-wrap"><div class="danger-bar" style="--w: 85%;"></div></div>
+      </div>
+      <div class="danger-row">
+        <div class="danger-emoji">😴</div>
+        <div class="danger-label">النوم في الحصة</div>
+        <div class="danger-bar-wrap"><div class="danger-bar" style="--w: 99%;"></div></div>
+      </div>
+      <div class="danger-row">
+        <div class="danger-emoji">📝</div>
+        <div class="danger-label">مجاوبتش على سؤاله</div>
+        <div class="danger-bar-wrap"><div class="danger-bar" style="--w: 78%;"></div></div>
+      </div>
+      <div class="danger-row">
+        <div class="danger-emoji">🗣️</div>
+        <div class="danger-label">الكلام في الحصة</div>
+        <div class="danger-bar-wrap"><div class="danger-bar" style="--w: 92%;"></div></div>
+      </div>
+      <div class="danger-row">
+        <div class="danger-emoji">📕</div>
+        <div class="danger-label">نسيت الكتاب في البيت</div>
+        <div class="danger-bar-wrap"><div class="danger-bar" style="--w: 96%;"></div></div>
+      </div>
+      <div class="danger-row">
+        <div class="danger-emoji">✏️</div>
+        <div class="danger-label">غشيت في الامتحان</div>
+        <div class="danger-bar-wrap"><div class="danger-bar" style="--w: 100%;"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOUNDBOARD -->
+  <div class="soundboard">
+    <h2>🔊 لوح الجمل الشهيرة 🔊</h2>
+    <p style="color: #888; margin-bottom: 1.5rem; font-size: 0.9rem;">اضغط على أي جملة لو حسيت إنك محتاجها 😅</p>
+    <div class="sound-grid">
+      <button class="sound-btn" onclick="showPopup('😱', '\"افتح الكتاب على صفحة كذا\"')">
+        <span class="btn-icon">📖</span>
+        "افتح الكتاب!"
+      </button>
+      <button class="sound-btn" onclick="showPopup('😰', '\"مين مذاكر الدرس؟\" - سؤال بيحدد مصائر!')">
+        <span class="btn-icon">🙋</span>
+        "مين مذاكر؟"
+      </button>
+      <button class="sound-btn" onclick="showPopup('💀', '\"اللي مش مذاكر يقوم يخرج!\" - أصعب قرار في الحياة')">
+        <span class="btn-icon">🚪</span>
+        "اللي مش مذاكر يخرج!"
+      </button>
+      <button class="sound-btn" onclick="showPopup('🔥', '\"انتوا مش فاهمين حاجة!\" - تشخيص دقيق جداً')">
+        <span class="btn-icon">🤦</span>
+        "مش فاهمين حاجة!"
+      </button>
+      <button class="sound-btn" onclick="showPopup('😭', '\"الامتحان النهارده!\" - أكتر جملة بترهب')">
+        <span class="btn-icon">📋</span>
+        "الامتحان النهارده!"
+      </button>
+      <button class="sound-btn" onclick="showPopup('⚡', '\"قلت إيه؟ عايزني أسمع!\" - النهاية.')">
+        <span class="btn-icon">👂</span>
+        "قلت إيه؟!"
+      </button>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz-section">
+    <h2>🎓 كويز: هل تقدر تنجح معاه؟</h2>
+    <div class="quiz-box">
+      <div class="quiz-q" id="quiz-q">جاري تحميل السؤال...</div>
+      <div class="quiz-options" id="quiz-opts"></div>
+      <div class="quiz-result" id="quiz-result"></div>
+      <button class="quiz-next" id="quiz-next" onclick="nextQuestion()" style="display:none">السؤال التالي ←</button>
+    </div>
+    <div style="text-align:center; margin-top:1rem; color:#888; font-size:0.9rem" id="quiz-score"></div>
+  </div>
+
+  <footer>
+    <span class="big-skull">☠️</span>
+    <p style="color: var(--red); font-size: 1.2rem; font-weight: 900; margin-bottom: 0.5rem;">مستر محمد نصر عرب</p>
+    <p>أسطورة لن يكررها التاريخ · رعب متجدد كل حصة</p>
+    <p style="margin-top: 1rem; color: #333;">تم إنشاء هذا الموقع بواسطة طلاب يذاكرون خوفاً لا حباً 💀</p>
+  </footer>
+
+</div>
+
+<script>
+// ====== CANVAS BACKGROUND ======
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+const particles = Array.from({length: 40}, () => ({
+  x: Math.random() * canvas.width,
+  y: Math.random() * canvas.height,
+  r: Math.random() * 2 + 0.5,
+  vx: (Math.random() - 0.5) * 0.5,
+  vy: (Math.random() - 0.5) * 0.5,
+  color: Math.random() > 0.5 ? '#c0392b' : '#f39c12'
+}));
+
+function drawParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = p.color;
+    ctx.fill();
+    p.x += p.vx;
+    p.y += p.vy;
+    if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+  });
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+
+// ====== SHAKE ======
+function triggerShake(el) {
+  el.classList.remove('shake');
+  void el.offsetWidth;
+  el.classList.add('shake');
+}
+
+// ====== POPUP ======
+function showPopup(icon, msg) {
+  document.getElementById('popup-icon').textContent = icon;
+  document.getElementById('popup-msg').textContent = msg;
+  document.getElementById('popup').classList.add('show');
+}
+function closePopup() {
+  document.getElementById('popup').classList.remove('show');
+}
+
+// ====== QUIZ ======
+const questions = [
+  {
+    q: "لو المستر سألك ومش عارف الإجابة، إيه أحسن حاجة تعملها؟",
+    opts: ["تبص في الكتاب بسرعة", "تقوله مش عارف", "تبدأ تتكلم بثقة وانت بتفكر", "تقله اسمك"],
+    ans: 2,
+    fb: ["❌ ده غش! المستر شايفك.", "❌ الصراحة مع المستر شجاعة، بس الأفضل تحاول.", "✅ صح! الثقة بتكسب وقت للتفكير.", "❌ هو عارف اسمك أكتر منك 😅"]
+  },
+  {
+    q: "المستر بيوزع امتحان مفاجئ. إيه أول حاجة تعملها؟",
+    opts: ["تطلع برة", "تحسب الوقت وتبدأ من الأسئلة السهلة", "تبكي", "تنتظر صاحبك يخلص ويديك يشوف"],
+    ans: 1,
+    fb: ["❌ الهروب مش حل، هيذكرك.", "✅ استراتيجية ممتازة!", "❌ ممكن تشتغل معاه، بس مش وحدها.", "❌ المستر هيمسك الورقتين في ثانية."]
+  },
+  {
+    q: "إيه أكتر حاجة المستر بيحتقرها في الطالب؟",
+    opts: ["الغياب", "عدم المذاكرة", "الكلام في الحصة", "كل ده صح"],
+    ans: 3,
+    fb: ["جزء صح بس مش الكل.", "جزء صح بس مش الكل.", "جزء صح بس مش الكل.", "✅ الإجابة الكاملة! كل ده صح وأكتر."]
+  },
+  {
+    q: "المستر بيدي درجات عالية لـ؟",
+    opts: ["اللي بيكلموه كتير", "اللي بيقدم واجباتهم في الموعد وبتفهم", "اللي بيجيبوا هدايا", "اللي بيضحكوه"],
+    ans: 1,
+    fb: ["❌ الكلام الزيادة مش بيفيد.", "✅ الجد والالتزام هو المفتاح.", "❌ ده مش أسلوبه.", "❌ ده صعب جداً أصلاً 😅"]
+  },
+  {
+    q: "ما هو السلاح الأقوى للنجاح مع المستر؟",
+    opts: ["المذاكرة العميقة والفهم", "التلخيص بس", "الغياب في يوم الامتحان المفاجئ", "ضرب اخماس في أسداس"],
+    ans: 0,
+    fb: ["✅ الفهم الحقيقي هو الوحيد اللي بينجحك!", "❌ التلخيص وحده مش كافي.", "❌ هيذكر غيابك ويسألك برضو!", "❌ ده مش استراتيجية متماسكة."]
+  }
+];
+
+let qIndex = 0, score = 0, answered = false;
+
+function loadQuestion() {
+  answered = false;
+  const q = questions[qIndex];
+  document.getElementById('quiz-q').textContent = `السؤال ${qIndex+1}/${questions.length}: ${q.q}`;
+  document.getElementById('quiz-result').textContent = '';
+  document.getElementById('quiz-next').style.display = 'none';
+  const optsEl = document.getElementById('quiz-opts');
+  optsEl.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt';
+    btn.textContent = opt;
+    btn.onclick = () => selectAnswer(i, btn);
+    optsEl.appendChild(btn);
+  });
+}
+
+function selectAnswer(i, btn) {
+  if (answered) return;
+  answered = true;
+  const q = questions[qIndex];
+  const allBtns = document.querySelectorAll('.quiz-opt');
+  allBtns.forEach(b => b.style.pointerEvents = 'none');
+  if (i === q.ans) {
+    btn.classList.add('correct');
+    score++;
+    document.getElementById('quiz-result').innerHTML = `<span style="color:#2ecc71">${q.fb[i]}</span>`;
+  } else {
+    btn.classList.add('wrong');
+    allBtns[q.ans].classList.add('correct');
+    document.getElementById('quiz-result').innerHTML = `<span style="color:var(--red)">${q.fb[i]}</span>`;
+  }
+  document.getElementById('quiz-next').style.display = 'block';
+  updateScore();
+}
+
+function nextQuestion() {
+  qIndex++;
+  if (qIndex < questions.length) {
+    loadQuestion();
+  } else {
+    // End
+    const percent = Math.round((score / questions.length) * 100);
+    let msg, icon;
+    if (percent >= 80) { msg = "ممتاز! أنت طالب نموذجي وهتعدي الامتحانات بتاع المستر 🎉"; icon = "🏆"; }
+    else if (percent >= 60) { msg = "كويس، بس لازم تذاكر أكتر علشان المستر! 📚"; icon = "📚"; }
+    else { msg = "اللهم سلم! انت محتاج تذاكر من الأول 😅 المستر مش رحمة!"; icon = "😱"; }
+    document.querySelector('.quiz-box').innerHTML = `
+      <div style="text-align:center; padding:1rem">
+        <div style="font-size:4rem; margin-bottom:1rem">${icon}</div>
+        <div style="font-size:1.5rem; font-weight:900; color:var(--yellow); margin-bottom:0.5rem">${score}/${questions.length} صح</div>
+        <div style="font-size:1.1rem; color:#ddd; margin-bottom:1.5rem">${msg}</div>
+        <button class="quiz-next" onclick="restartQuiz()">🔄 حاول تاني</button>
+      </div>
+    `;
+  }
+}
+
+function restartQuiz() {
+  qIndex = 0; score = 0;
+  document.querySelector('.quiz-box').innerHTML = `
+    <div class="quiz-q" id="quiz-q"></div>
+    <div class="quiz-options" id="quiz-opts"></div>
+    <div class="quiz-result" id="quiz-result"></div>
+    <button class="quiz-next" id="quiz-next" onclick="nextQuestion()" style="display:none">السؤال التالي ←</button>
+  `;
+  loadQuestion();
+  updateScore();
+}
+
+function updateScore() {
+  document.getElementById('quiz-score').textContent = `النتيجة الحالية: ${score}/${questions.length}`;
+}
+
+loadQuestion();
+</script>
+</body>
+</html>
